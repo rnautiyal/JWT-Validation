@@ -102,10 +102,20 @@ TOKEN=$(az account get-access-token \
 curl -k -H "Authorization: Bearer $TOKEN" https://<appgwFrontendIpOrDns>:<listenerPort>/<pathToListenerWithRoute>
 ```
 
-> [!NOTE]
-> Expected Response:
-> - **200 OK** → JWT validated successfully
-> - **401 Unauthorized / 403 Forbidden** → Token invalid or expired
+
+**Expected Response:**
+
+* **200 OK** : JWT validated successfully
+* **401 Unauthorized / 403 Forbidden** : Token invalid or expired  
+  If you receive **401**, verify that the `aud` (audience) claim in the token matches  expected value.  
+  You can check this using `awk` and `jq`:
+  If you receive **403**, verify that the `exp` expiry in the token still valid 
+  You can check this using `awk` and `jq`:
+
+```bash
+# Decode JWT and extract audience
+echo $JWT_TOKEN | awk -F. '{print $2}' | base64 --decode | jq '.aud'
+echo $JWT_TOKEN | awk -F. '{print $2}' | base64 --decode | jq '.exp'
 
 ### Next steps
 To learn more about JWT validation and related identity features in Azure:
