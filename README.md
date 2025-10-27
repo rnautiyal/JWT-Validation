@@ -114,8 +114,8 @@ curl -k -H "Authorization: Bearer $TOKEN" https://<appgwFrontendIpOrDns>:<listen
 
 ```bash
 # Decode JWT and extract audience
-echo $JWT_TOKEN | awk -F. '{print $2}' | base64 --decode | jq '.aud'
-echo $JWT_TOKEN | awk -F. '{print $2}' | base64 --decode | jq '.exp'
+echo $TOKEN | awk -F. '{print $2}' | base64 --decode | jq '.aud'
+echo $TOKEN | awk -F. '{print $2}' | base64 --decode | jq '.exp'
 ```
 ### Next steps
 To learn more about JWT validation and related identity features in Azure:
